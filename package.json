@@ -1,0 +1,28 @@
+{
+  "name": "first-battleship",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chrisparisi/first-battleship.git"
+  },
+  "author": "Chris Parisi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chrisparisi/first-battleship/issues"
+  },
+  "homepage": "https://github.com/chrisparisi/first-battleship#readme",
+  "devDependencies": {
+    "@babel/preset-env": "^7.16.0",
+    "jest": "^27.3.1",
+    "webpack": "^5.61.0",
+    "webpack-cli": "^4.9.1"
+  },
+  "dependencies": {
+    "lodash": "^4.17.21"
+  }
+}
