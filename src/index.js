@@ -1,5 +1,6 @@
-import Ship from './factories/ship';
 import Gameboard from './factories/gameboard';
+import { playerShips, computerShips } from './modules/createShips';
+import Player from './factories/player';
 
 //Create Boards
 
@@ -10,6 +11,8 @@ const shipDisplay = document.querySelector('.ship-display');
 const setupButtons = document.querySelector('.setup-buttons');
 const gameMessage = document.querySelector('.game-message');
 
+//Refactor
+
 let playerSquares = [];
 let computerSquares = [];
 
@@ -18,29 +21,6 @@ playerBoard.generateBoard( gridUser, playerSquares );
 
 const computerBoard = Gameboard();
 computerBoard.generateBoard( gridComputer, computerSquares );
-
-//Create Ships
-
-const carrier = Ship(5, 'carrier');
-const cruiser = Ship(4, 'cruiser');
-const destroyer = Ship(4, 'destroyer');
-const submarine = Ship(3, 'submarine');
-const corvette = Ship(2, 'corvette');
-
-carrier.generateHitBox();
-carrier.createShip();
-
-cruiser.generateHitBox();
-cruiser.createShip();
-
-destroyer.generateHitBox();
-destroyer.createShip();
-
-submarine.generateHitBox();
-submarine.createShip();
-
-corvette.generateHitBox();
-corvette.createShip();
 
 //Rotate Player Ships
 
@@ -117,12 +97,13 @@ function rotate() {
 rotateButton.addEventListener('click', rotate);
 
 //Place Ships for Computer
+//Refactor
 
-computerBoard.placeShips(carrier, computerSquares);
-computerBoard.placeShips(cruiser, computerSquares);
-computerBoard.placeShips(destroyer, computerSquares);
-computerBoard.placeShips(submarine, computerSquares);
-computerBoard.placeShips(corvette, computerSquares);
+computerBoard.placeShips(computerShips.computerCarrier, computerSquares);
+computerBoard.placeShips(computerShips.computerCruiser, computerSquares);
+computerBoard.placeShips(computerShips.computerDestroyer, computerSquares);
+computerBoard.placeShips(computerShips.computerSubmarine, computerSquares);
+computerBoard.placeShips(computerShips.computerCorvette, computerSquares);
 
 
 //Place Player Ships
@@ -219,25 +200,25 @@ function startGame() {
     startButton.addEventListener('click', startMatch)
 }
 
+const realPlayer = Player('Human');
+const computerPlayer = Player('Computer');
+
+function checkWin() {
+    if (realPlayer.fleet.length === 5) {
+        gameMessage.innerText = "Computer wins!";    
+    }
+    if (computerPlayer.fleet.length === 5) {
+        gameMessage.innerText = "You win!";    
+    }
+}
+
 function startMatch() {
     computerSquares.forEach(square => square.addEventListener('click', function(e) {
-        revealSquare(square);
+        computerBoard.recieveAttack(square, computerPlayer);
+        checkWin();
+        computerPlayer.move(playerSquares, realPlayer);
+        checkWin();
     }));
     setupButtons.style.display = 'none';
     gameMessage.innerText = "Click on the enemy's board to bombard their ships!";
-}
-
-function revealSquare(square) {
-    if (!square.classList.contains('boom')) {
-        if (square.classList.contains('carrier')) carrier.hit();
-        if (square.classList.contains('cruiser')) cruiser.hit();
-        if (square.classList.contains('destroyer')) destroyer.hit();
-        if (square.classList.contains('submarine')) submarine.hit();
-        if (square.classList.contains('corvette')) corvette.hit();
-    }
-    if (square.classList.contains('taken')) {
-        square.classList.add('boom');
-    } else {
-        square.classList.add('miss');
-    }
 }

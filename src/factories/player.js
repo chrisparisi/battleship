@@ -1,17 +1,37 @@
-const Player = () => {
-    const move = () => {
-        let randomMove = Math.floor(Math.random() * 100);
-        if (!playerSquares[randomMove].classList.contains('boom')) {
+import { playerShips, computerShips } from "../modules/createShips";
 
-            const hit = playerSquares[random].classList.contains('taken');
+const Player = (name) => {
+
+    let fleet = [];
+
+    const playerName = () => name
+
+    const move = (playerSquares, realPlayer) => {
+        let randomMove = Math.floor(Math.random() * 100);
+        if (!playerSquares[randomMove].classList.contains('boom') && !playerSquares[randomMove].classList.contains('miss')) {
+
+            const hit = playerSquares[randomMove].classList.contains('taken');
             playerSquares[randomMove].classList.add(hit ? 'boom' : 'miss');
 
-            //playerSquares[randomMove].classList.add('boom');
-            if (playerSquares[randomMove].classList.contains('carrier')) carrier.hit();
-            if (playerSquares[randomMove].classList.contains('cruiser')) cruiser.hit();
-            if (playerSquares[randomMove].classList.contains('destroyer')) destroyer.hit();
-            if (playerSquares[randomMove].classList.contains('submarine')) submarine.hit();
-            if (playerSquares[randomMove].classList.contains('corvette')) corvette.hit();
-        } else move();
+            if (playerSquares[randomMove].classList.contains('carrier')) playerShips.playerCarrier.hit(realPlayer);
+            if (playerSquares[randomMove].classList.contains('cruiser')) playerShips.playerCruiser.hit(realPlayer);
+            if (playerSquares[randomMove].classList.contains('destroyer')) playerShips.playerDestroyer.hit(realPlayer);
+            if (playerSquares[randomMove].classList.contains('submarine')) playerShips.playerSubmarine.hit(realPlayer);
+            if (playerSquares[randomMove].classList.contains('corvette')) playerShips.playerCorvette.hit(realPlayer);
+
+        } else {
+            move(playerSquares, realPlayer);
+        }
     }
-}
+
+    const win = () => {
+        if (fleet.length === 5) {
+            console.log(`${turn} won!`)
+        }
+    }
+
+    return { move, win, playerName, fleet }
+
+};
+
+export default Player;

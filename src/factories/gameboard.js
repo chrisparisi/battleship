@@ -1,8 +1,19 @@
-import Ship from './ship'
+import { playerShips, computerShips } from '../modules/createShips';
 
 const Gameboard = () => {
-    const recieveAttack = () => {
-
+    function recieveAttack(square, computerPlayer) {
+        if (!square.classList.contains('boom')) {
+            if (square.classList.contains('carrier')) computerShips.computerCarrier.hit(computerPlayer);
+            if (square.classList.contains('cruiser')) computerShips.computerCruiser.hit(computerPlayer);
+            if (square.classList.contains('destroyer')) computerShips.computerDestroyer.hit(computerPlayer);
+            if (square.classList.contains('submarine')) computerShips.computerSubmarine.hit(computerPlayer);
+            if (square.classList.contains('corvette')) computerShips.computerCorvette.hit(computerPlayer);
+        }
+        if (square.classList.contains('taken')) {
+            square.classList.add('boom');
+        } else {
+            square.classList.add('miss');
+        }
     }
 
     const placeShips = ( ship, squares ) => {
@@ -29,7 +40,7 @@ const Gameboard = () => {
         }
     }
 
-    return { generateBoard, placeShips }
+    return { generateBoard, placeShips, recieveAttack }
 
 }
 

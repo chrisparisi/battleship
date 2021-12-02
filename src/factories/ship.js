@@ -38,17 +38,18 @@ const Ship = (length, name) => {
       }
    }
 
-    const hit = x => {
+    const hit = (player) => {
       hitArray.push(0);
-      console.log(hitArray);
       if ( _.isEqual(hitArray, sunkArray) ) {
-        isSunk();
+        isSunk(player);
       };
       return hitArray;
     };
 
-    const isSunk = () => {
-      console.log('Ship sank');
+    const isSunk = (player) => {
+      player.fleet.push(0);
+      console.log(player.fleet.length);
+      console.log(`${getName()} sank`);
     };
 
     const createShip = () => {
